@@ -1,0 +1,6 @@
+Schritt 3: Backend (Node.js und Express) für Mitgliederverwaltung
+
+Installation von Abhängigkeiten
+
+npm init -y
+npm install express sqlite3 body-parser
