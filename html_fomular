@@ -1,0 +1,8 @@
+<!-- Formular für Bearbeiten einer Veranstaltung -->
+<form id="edit-event-form" style="display:none;">
+    <input type="hidden" id="edit-event-id">
+    <input type="text" id="edit-event-name" placeholder="Veranstaltung Name" required>
+    <input type="date" id="edit-event-date" required>
+    <input type="text" id="edit-event-location" placeholder="Ort" required>
+    <button type="submit">Veranstaltung aktualisieren</button>
+</form>
