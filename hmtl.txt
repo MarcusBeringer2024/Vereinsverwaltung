@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vereinsverwaltung</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Vereinsverwaltung</h1>
+        <nav>
+            <ul>
+                <li><a href="#home">Startseite</a></li>
+                <li><a href="#mitglieder">Mitglieder</a></li>
+                <li><a href="#veranstaltungen">Veranstaltungen</a></li>
+                <li><a href="#beitraege">Beiträge</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section id="home">
+            <h2>Willkommen zur Vereinsverwaltung</h2>
+            <p>Hier können Sie Ihre Vereinsmitglieder verwalten, Veranstaltungen planen und Mitgliedsbeiträge kontrollieren.</p>
+        </section>
+
+        <section id="mitglieder">
+            <h2>Mitglieder</h2>
+            <p>Hier können Sie Mitglieder hinzufügen, bearbeiten oder löschen.</p>
+            <!-- Tabelle für Mitglieder -->
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Adresse</th>
+                        <th>Kontakt</th>
+                        <th>Aktionen</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Beispielhafte Mitglieder -->
+                    <tr>
+                        <td>Max Mustermann</td>
+                        <td>Musterstraße 1</td>
+                        <td>max@muster.de</td>
+                        <td>
+                            <button>Bearbeiten</button>
+                            <button>Löschen</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section id="veranstaltungen">
+            <h2>Veranstaltungen</h2>
+            <p>Hier können Sie Vereinsveranstaltungen planen und verwalten.</p>
+            <!-- Veranstaltungskalender -->
+        </section>
+
+        <section id="beitraege">
+            <h2>Beiträge</h2>
+            <p>Hier können Sie Mitgliedsbeiträge verwalten und kontrollieren.</p>
+            <!-- Beitragsübersicht -->
+        </section>
+    </main>
+
+    <footer>
+        <p>© 2024 Vereinsverwaltung</p>
+    </footer>
+</body>
+</html>
