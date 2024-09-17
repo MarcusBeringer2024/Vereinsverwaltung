@@ -1,0 +1,68 @@
+document.addEventListener('DOMContentLoaded', () => {
+    const veranstaltungenTabelle = document.querySelector('#veranstaltungen-tabelle tbody');
+    const addEventForm = document.getElementById('add-event-form');
+
+    // Veranstaltungen abrufen und in die Tabelle einfügen
+    function fetchVeranstaltungen() {
+        fetch('/veranstaltungen')
+            .then(response => response.json())
+            .then(data => {
+                veranstaltungenTabelle.innerHTML = ''; // Tabelle leeren
+                data.events.forEach(event => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${event.name}</td>
+                        <td>${event.datum}</td>
+                        <td>${event.ort}</td>
+                        <td>
+                            <button class="delete-btn" data-id="${event.id}">Löschen</button>
+                        </td>
+                    `;
+                    veranstaltungenTabelle.appendChild(row);
+                });
+
+                // Event-Listener für Löschen-Buttons
+                document.querySelectorAll('.delete-btn').forEach(button => {
+                    button.addEventListener('click', () => {
+                        deleteVeranstaltung(button.dataset.id);
+                    });
+                });
+            });
+    }
+
+    // Neue Veranstaltung hinzufügen
+    addEventForm.addEventListener('submit', (event) => {
+        event.preventDefault();
+
+        const name = document.getElementById('event-name').value;
+        const datum = document.getElementById('event-date').value;
+        const ort = document.getElementById('event-location').value;
+
+        fetch('/veranstaltungen', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ name, datum, ort })
+        })
+            .then(response => response.json())
+            .then(data => {
+                fetchVeranstaltungen(); // Aktualisiere die Veranstaltungsliste
+                addEventForm.reset(); // Formular zurücksetzen
+            });
+    });
+
+    // Veranstaltung löschen
+    function deleteVeranstaltung(id) {
+        fetch(`/veranstaltungen/${id}`, {
+            method: 'DELETE'
+        })
+            .then(response => response.json())
+            .then(data => {
+                fetchVeranstaltungen(); // Aktualisiere die Veranstaltungsliste
+            });
+    }
+
+    // Initiale Ladefunktion für Veranstaltungen
+    fetchVeranstaltungen();
+});
