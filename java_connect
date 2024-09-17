@@ -1,0 +1,68 @@
+document.addEventListener('DOMContentLoaded', () => {
+    const mitgliederTabelle = document.querySelector('#mitglieder-tabelle tbody');
+    const addMemberForm = document.getElementById('add-member-form');
+
+    // Mitglieder abrufen und in die Tabelle einfügen
+    function fetchMitglieder() {
+        fetch('/mitglieder')
+            .then(response => response.json())
+            .then(data => {
+                mitgliederTabelle.innerHTML = ''; // Tabelle leeren
+                data.members.forEach(mitglied => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${mitglied.name}</td>
+                        <td>${mitglied.adresse}</td>
+                        <td>${mitglied.kontakt}</td>
+                        <td>
+                            <button class="delete-btn" data-id="${mitglied.id}">Löschen</button>
+                        </td>
+                    `;
+                    mitgliederTabelle.appendChild(row);
+                });
+
+                // Event-Listener für Löschen-Buttons
+                document.querySelectorAll('.delete-btn').forEach(button => {
+                    button.addEventListener('click', () => {
+                        deleteMitglied(button.dataset.id);
+                    });
+                });
+            });
+    }
+
+    // Neues Mitglied hinzufügen
+    addMemberForm.addEventListener('submit', (event) => {
+        event.preventDefault();
+
+        const name = document.getElementById('name').value;
+        const adresse = document.getElementById('adresse').value;
+        const kontakt = document.getElementById('kontakt').value;
+
+        fetch('/mitglieder', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ name, adresse, kontakt })
+        })
+            .then(response => response.json())
+            .then(data => {
+                fetchMitglieder(); // Aktualisiere die Mitgliederliste
+                addMemberForm.reset(); // Formular zurücksetzen
+            });
+    });
+
+    // Mitglied löschen
+    function deleteMitglied(id) {
+        fetch(`/mitglieder/${id}`, {
+            method: 'DELETE'
+        })
+            .then(response => response.json())
+            .then(data => {
+                fetchMitglieder(); // Aktualisiere die Mitgliederliste
+            });
+    }
+
+    // Initiale Ladefunktion für Mitglieder
+    fetchMitglieder();
+});
