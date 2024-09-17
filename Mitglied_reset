@@ -1,0 +1,11 @@
+// Mitglied löschen
+app.delete('/mitglieder/:id', (req, res) => {
+    const { id } = req.params;
+    db.run(`DELETE FROM mitglieder WHERE id = ?`, id, function (err) {
+        if (err) {
+            res.status(400).json({ "error": err.message });
+            return;
+        }
+        res.json({ "message": "Mitglied gelöscht", changes: this.changes });
+    });
+});
