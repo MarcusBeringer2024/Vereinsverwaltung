@@ -1,0 +1,45 @@
+const express = require('express');
+const sqlite3 = require('sqlite3').verbose();
+const bodyParser = require('body-parser');
+
+const app = express();
+const db = new sqlite3.Database('./vereinsverwaltung.db');
+
+app.use(bodyParser.json());
+
+// Mitglieder abrufen
+app.get('/mitglieder', (req, res) => {
+    db.all("SELECT * FROM mitglieder", [], (err, rows) => {
+        if (err) {
+            res.status(400).json({ "error": err.message });
+            return;
+        }
+        res.json({ "members": rows });
+    });
+});
+
+// Neues Mitglied hinzufügen
+app.post('/mitglieder', (req, res) => {
+    const { name, adresse, kontakt } = req.body;
+    db.run(`INSERT INTO mitglieder (name, adresse, kontakt) VALUES (?,?,?)`,
+        [name, adresse, kontakt], function (err) {
+            if (err) {
+                return res.status(400).json({ "error": err.message });
+            }
+            res.json({ "member": { id: this.lastID, name, adresse, kontakt } });
+        });
+});
+
+app.listen(3000, () => {
+    console.log("Server läuft auf http://localhost:3000");
+});
+
+// Datenbankinitialisierung
+db.serialize(() => {
+    db.run(`CREATE TABLE IF NOT EXISTS mitglieder (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        name TEXT,
+        adresse TEXT,
+        kontakt TEXT
+    )`);
+});
